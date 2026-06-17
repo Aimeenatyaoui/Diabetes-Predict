@@ -165,7 +165,6 @@ with left:
     card_close()
 
     # GUIDE CARD
-    card_open()
     section_label("Panduan Pengisian")
     st.markdown("""
     <div style="color:rgba(255,255,255,.72);font-size:.82rem;line-height:1.75">
