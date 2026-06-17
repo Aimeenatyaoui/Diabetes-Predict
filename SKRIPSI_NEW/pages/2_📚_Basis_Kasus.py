@@ -34,7 +34,6 @@ def load_cases() -> pd.DataFrame:
 df = load_cases()
 
 # ── STATS ─────────────────────────────────────────────────────────────────
-card_open()
 section_label("Statistik Basis Kasus")
 st.markdown("<div style='height:6px'></div>", unsafe_allow_html=True)
 
@@ -67,7 +66,6 @@ for col, val, lbl in zip(
 card_close()
 
 # ── TABLE ──────────────────────────────────────────────────────────────────
-card_open()
 section_label("Daftar Kasus Tersimpan")
 st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
 
@@ -109,7 +107,6 @@ st.dataframe(
 card_close()
 
 # ── EXPORT ────────────────────────────────────────────────────────────────
-card_open()
 section_label("Ekspor Data")
 st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
 ec1, ec2 = st.columns(2, gap="small")
