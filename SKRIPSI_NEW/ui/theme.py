@@ -19,6 +19,21 @@ def inject_glass_theme() -> None:
             --accent2: #22c55e;
             --danger: #f87171;
             --warn: #fbbf24;
+           /* Expander */
+            [data-testid="stExpander"] {
+                background: rgba(255,255,255,.07) !important;
+                border: 1px solid var(--stroke) !important;
+                border-radius: 10px !important;
+            }
+            [data-testid="stExpander"] summary {
+                color: white !important;
+            }
+            [data-testid="stExpander"] p,
+            [data-testid="stExpander"] span,
+            [data-testid="stExpander"] td,
+            [data-testid="stExpander"] th {
+                color: white !important;
+            } 
           }
 
           /* ── HEADER & DECORATION ── */
