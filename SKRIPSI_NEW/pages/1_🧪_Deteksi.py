@@ -113,7 +113,6 @@ left, right = st.columns([1.1, 1], gap="large")
 
 # ── LEFT: INPUT FORM ──────────────────────────────────────────────────────
 with left:
-    card_open()
     section_label("A — Input Data Pemeriksaan Pasien")
     st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
 
@@ -180,7 +179,6 @@ with left:
 
 # ── RIGHT: RESULT PANEL ────────────────────────────────────────────────────
 with right:
-    card_open()
     section_label("B — Hasil Estimasi")
 
     if submitted:
