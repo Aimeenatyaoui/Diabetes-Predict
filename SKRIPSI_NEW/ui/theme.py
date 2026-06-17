@@ -21,12 +21,12 @@ def inject_glass_theme() -> None:
             --warn: #fbbf24;
         }
         
-            .stButton > button:not([kind="primary"]) {
-              color: white !important;
-              border: 1px solid rgba(255,255,255,.3) !important;
+            div[data-testid="stButton"] button {
+            color: white !important;
             }
-            .stRadio label { font-size: .88rem !important; color: white !important; }
-            .stRadio label p { color: white !important; }
+            .div[data-testid="stRadio"] label { color: white !important; }
+            div[data-testid="stRadio"] label p { color: white !important; }
+            div[data-testid="stRadio"] span { color: white !important; }
       
           </style>
           """,
