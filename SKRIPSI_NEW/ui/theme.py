@@ -94,7 +94,7 @@ def inject_glass_theme() -> None:
           div[data-baseweb="input"]:focus-within > div {
             border-color: var(--accent) !important;
           }
-          input { color: white !important; }
+          input { color: black !important; }
           label { color: rgba(255,255,255,.85) !important; font-size: .85rem !important; }
 
           /* ── BUTTONS ── */
