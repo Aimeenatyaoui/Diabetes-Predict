@@ -174,7 +174,7 @@ def inject_glass_theme() -> None:
           }
 
           /* ── RADIO ── */
-          .stRadio label { font-size: .88rem !important; }
+          .stRadio label { font-size: .88rem !important; color: white !important; }
 
           /* ── CAPTION ── */
           .muted { color: var(--muted); font-size: .85rem; }
