@@ -19,7 +19,19 @@ def inject_glass_theme() -> None:
             --accent2: #22c55e;
             --danger: #f87171;
             --warn: #fbbf24;
-          }
+        }
+        
+            .stButton > button:not([kind="primary"]) {
+              color: white !important;
+              border: 1px solid rgba(255,255,255,.3) !important;
+            }
+            .stRadio label { font-size: .88rem !important; color: white !important; }
+            .stRadio label p { color: white !important; }
+      
+          </style>
+          """,
+          unsafe_allow_html=True,
+    )
 
           /* ── HEADER & DECORATION ── */
           header[data-testid="stHeader"] { background: transparent !important; }
@@ -175,7 +187,7 @@ def inject_glass_theme() -> None:
 
           /* ── RADIO ── */
           .stRadio label { font-size: .88rem !important; color: white !important; }
-
+          .stRadio label p { color: white !important; }
           /* ── CAPTION ── */
           .muted { color: var(--muted); font-size: .85rem; }
         </style>
