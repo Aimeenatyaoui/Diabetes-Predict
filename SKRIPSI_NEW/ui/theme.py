@@ -19,25 +19,11 @@ def inject_glass_theme() -> None:
             --accent2: #22c55e;
             --danger: #f87171;
             --warn: #fbbf24;
-        }
-        
-            div[data-testid="stButton"] button {
-            color: white !important;
-            }
-            .div[data-testid="stRadio"] label { color: white !important; }
-            div[data-testid="stRadio"] label p { color: white !important; }
-            div[data-testid="stRadio"] span { color: white !important; }
-      
-          </style>
-          """,
-          unsafe_allow_html=True,
-    )
+          }
 
-          /* ── HEADER & DECORATION ── */
           header[data-testid="stHeader"] { background: transparent !important; }
           [data-testid="stDecoration"] { display: none; }
 
-          /* ── BACKGROUND ── */
           .stApp {
             background:
               radial-gradient(1100px 600px at 10% 0%, rgba(45,212,191,.18), transparent 55%),
@@ -47,7 +33,6 @@ def inject_glass_theme() -> None:
             font-family: 'Inter', -apple-system, sans-serif;
           }
 
-          /* ── SIDEBAR ── */
           section[data-testid="stSidebar"] { width: 270px !important; }
           section[data-testid="stSidebar"] > div:first-child {
             background: linear-gradient(160deg, rgba(5,11,31,.85), rgba(11,27,58,.75)) !important;
@@ -61,7 +46,6 @@ def inject_glass_theme() -> None:
             color: rgba(255,255,255,.9) !important;
           }
 
-          /* ── LAYOUT ── */
           .block-container {
             padding-top: 2.5rem !important;
             padding-bottom: 2rem;
@@ -74,7 +58,6 @@ def inject_glass_theme() -> None:
             letter-spacing: -0.02em;
           }
 
-          /* ── GLASS CARD ── */
           .card {
             background: linear-gradient(160deg, var(--glass), var(--glass2));
             border: 1px solid var(--stroke);
@@ -86,7 +69,6 @@ def inject_glass_theme() -> None:
             margin-bottom: 12px;
           }
 
-          /* ── SECTION LABEL ── */
           .section-label {
             font-size: .7rem;
             font-weight: 700;
@@ -96,20 +78,14 @@ def inject_glass_theme() -> None:
             margin-bottom: 4px;
           }
 
-          /* ── INPUTS ── */
           div[data-baseweb="input"] > div {
             background: rgba(255,255,255,.07) !important;
             border: 1px solid var(--stroke) !important;
             border-radius: 10px !important;
-            transition: border-color .2s;
-          }
-          div[data-baseweb="input"]:focus-within > div {
-            border-color: var(--accent) !important;
           }
           input { color: black !important; }
           label { color: rgba(255,255,255,.85) !important; font-size: .85rem !important; }
 
-          /* ── BUTTONS ── */
           .stButton > button {
             border-radius: 10px !important;
             font-weight: 600 !important;
@@ -126,8 +102,10 @@ def inject_glass_theme() -> None:
             transform: translateY(-1px);
             box-shadow: 0 10px 22px rgba(0,0,0,.28);
           }
+          div[data-testid="stButton"] button {
+            color: white !important;
+          }
 
-          /* ── RESULT BADGE ── */
           .badge {
             display: inline-block;
             padding: 8px 20px;
@@ -148,14 +126,12 @@ def inject_glass_theme() -> None:
             color: var(--accent2);
           }
 
-          /* ── DIVIDER ── */
           .hdivider {
             border: none;
             border-top: 1px solid var(--stroke);
             margin: 16px 0;
           }
 
-          /* ── METRIC MINI ── */
           .mini-metric {
             background: rgba(255,255,255,.05);
             border: 1px solid var(--stroke);
@@ -174,21 +150,24 @@ def inject_glass_theme() -> None:
             margin-top: 2px;
           }
 
-          /* ── INFO / WARNING OVERRIDES ── */
-          [data-testid="stAlert"] {
+          [data-testid="stAlert"] { border-radius: 10px !important; }
+          [data-testid="stDataFrame"] { border-radius: 10px !important; overflow: hidden; }
+
+          div[data-testid="stRadio"] label { color: white !important; }
+          div[data-testid="stRadio"] label p { color: white !important; }
+          div[data-testid="stRadio"] span { color: white !important; }
+
+          [data-testid="stExpander"] {
+            background: rgba(255,255,255,.07) !important;
+            border: 1px solid var(--stroke) !important;
             border-radius: 10px !important;
           }
+          [data-testid="stExpander"] summary { color: white !important; }
+          [data-testid="stExpander"] p,
+          [data-testid="stExpander"] span,
+          [data-testid="stExpander"] td,
+          [data-testid="stExpander"] th { color: white !important; }
 
-          /* ── DATAFRAME ── */
-          [data-testid="stDataFrame"] {
-            border-radius: 10px !important;
-            overflow: hidden;
-          }
-
-          /* ── RADIO ── */
-          .stRadio label { font-size: .88rem !important; color: white !important; }
-          .stRadio label p { color: white !important; }
-          /* ── CAPTION ── */
           .muted { color: var(--muted); font-size: .85rem; }
         </style>
         """,
