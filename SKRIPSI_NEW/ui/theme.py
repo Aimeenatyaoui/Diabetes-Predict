@@ -86,24 +86,29 @@ def inject_glass_theme() -> None:
           input { color: black !important; }
           label { color: rgba(255,255,255,.85) !important; font-size: .85rem !important; }
 
-          .stButton > button {
-            border-radius: 10px !important;
-            font-weight: 600 !important;
-            transition: all 0.25s ease;
-            letter-spacing: 0.01em;
-          }
           .stButton > button[kind="primary"] {
             background: linear-gradient(135deg, #2dd4bf, #22c55e) !important;
             color: #050b1f !important;
             border: none !important;
             box-shadow: 0 6px 18px rgba(45,212,191,.25);
+            border-radius: 10px !important;
+            font-weight: 600 !important;
           }
           .stButton > button:hover {
             transform: translateY(-1px);
             box-shadow: 0 10px 22px rgba(0,0,0,.28);
           }
           div[data-testid="stButton"] button {
+            background: transparent !important;
             color: white !important;
+            border: 1px solid rgba(255,255,255,.3) !important;
+            border-radius: 10px !important;
+            font-weight: 600 !important;
+          }
+          div[data-testid="stButton"] button[kind="primary"] {
+            background: linear-gradient(135deg, #2dd4bf, #22c55e) !important;
+            color: #050b1f !important;
+            border: none !important;
           }
 
           .badge {
