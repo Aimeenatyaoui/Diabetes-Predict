@@ -223,16 +223,16 @@ with right:
 
         # Badge hasil
         if predicted == 1:
-            st.markdown('<div class="badge badge-high">⚠️ RISIKO TINGGI</div>', unsafe_allow_html=True)
+            st.markdown('<div class="badge badge-high">⚠️ Beresiko Diabetes</div>', unsafe_allow_html=True)
             st.markdown("<div style='color:rgba(255,255,255,.7);font-size:.88rem;margin-bottom:12px'>Sistem mengestimasi pasien <b>berisiko diabetes</b>. Diperlukan evaluasi klinis lebih lanjut.</div>", unsafe_allow_html=True)
         else:
-            st.markdown('<div class="badge badge-low">✅ RISIKO RENDAH</div>', unsafe_allow_html=True)
+            st.markdown('<div class="badge badge-low">✅ Tidak Beresiko Diabetes</div>', unsafe_allow_html=True)
             st.markdown("<div style='color:rgba(255,255,255,.7);font-size:.88rem;margin-bottom:12px'>Sistem mengestimasi pasien <b>tidak berisiko diabetes</b> saat ini.</div>", unsafe_allow_html=True)
 
         # Metric row
         mc1, mc2, mc3 = st.columns(3)
         with mc1:
-            st.markdown(f"""<div class="mini-metric"><div class="val">{risk_score:.0%}</div><div class="lbl">Skor Risiko</div></div>""", unsafe_allow_html=True)
+            st.markdown(f"""<div class="mini-metric"><div class="val">{risk_score:.0%}</div><div class="lbl">Probabilitas Risiko</div></div>""", unsafe_allow_html=True)
         with mc2:
             st.markdown(f"""<div class="mini-metric"><div class="val">{counts.get(1,0)}/{OPTIMAL_K}</div><div class="lbl">Tetangga DM</div></div>""", unsafe_allow_html=True)
         with mc3:
