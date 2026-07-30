@@ -16,19 +16,19 @@ from ui.theme import card_close, card_open, divider, inject_glass_theme, section
 st.set_page_config(page_title="Deteksi — DM Tipe 2", page_icon="🧪", layout="wide")
 inject_glass_theme()
 
-# ── DESIGN TOKENS — satu sumber kebenaran untuk seluruh halaman ─────────
-BG_PAGE = "#f1f5f9"        # slate-100 — latar halaman, netral & lembut
-BG_CARD = "#ffffff"        # kartu solid putih (bukan glass) — lebih terbaca & standar
-BORDER_CARD = "#e2e8f0"    # slate-200 — garis tepi kartu
-TEXT_PRIMARY = "#0f172a"   # slate-900 — teks utama
-TEXT_MUTED = "#64748b"     # slate-500 — teks sekunder/caption
-ACCENT = "#2563eb"         # blue-600 — satu warna aksen: tombol utama, angka penting
-ACCENT_SOFT = "#dbeafe"    # blue-100 — latar chip/label kecil
-SIDEBAR_BG = "#0f172a"     # slate-900 — sidebar gelap, senada TEXT_PRIMARY
-SIDEBAR_TEXT = "#f1f5f9"   # teks sidebar terang, kontras dgn latar gelap
+# ── DESIGN TOKENS ──────────────────────────────────────────────────────
+BG_PAGE = "#f1f5f9"        
+BG_CARD = "#ffffff"        
+BORDER_CARD = "#e2e8f0"    
+TEXT_PRIMARY = "#0f172a"   
+TEXT_MUTED = "#64748b"     
+ACCENT = "#2563eb"         
+ACCENT_SOFT = "#dbeafe"    
+SIDEBAR_BG = "#0f172a"     
+SIDEBAR_TEXT = "#f1f5f9"   
 
-DANGER_TEXT, DANGER_BG, DANGER_BORDER = "#b91c1c", "#fef2f2", "#fecaca"   # merah — risiko
-SUCCESS_TEXT, SUCCESS_BG, SUCCESS_BORDER = "#15803d", "#f0fdf4", "#bbf7d0"  # hijau — aman
+DANGER_TEXT, DANGER_BG, DANGER_BORDER = "#b91c1c", "#fef2f2", "#fecaca"
+SUCCESS_TEXT, SUCCESS_BG, SUCCESS_BORDER = "#15803d", "#f0fdf4", "#bbf7d0"
 
 # ── STYLE GLOBAL ──────────────────────────────────────────────────────────
 st.markdown(f"""
@@ -42,7 +42,7 @@ html, body, [class^="css"] {{ font-size: 16px !important; }}
 section[data-testid="stSidebar"] {{ background: {SIDEBAR_BG} !important; }}
 section[data-testid="stSidebar"] * {{ color: {SIDEBAR_TEXT} !important; font-size: 1rem !important; }}
 
-/* Kartu — flat, solid, konsisten */
+/* Kartu */
 div[data-testid="stForm"],
 div[data-testid="stExpander"],
 div[data-testid="stVerticalBlockBorderWrapper"] {{
@@ -59,12 +59,13 @@ div[data-testid="stVerticalBlockBorderWrapper"] * {{
 
 h1, h2, h3 {{ color: {TEXT_PRIMARY} !important; }}
 
-/* Catch-all: pastikan tidak ada teks putih tersisa di area konten utama */
+/* Pastikan semua teks di main area hitam */
 div.main *, [data-testid="stMain"] * {{ color: {TEXT_PRIMARY} !important; }}
 
 label, .stMarkdown p, .stMarkdown li, .stCaption, p, span {{
     font-size: 1rem !important;
     line-height: 1.6 !important;
+    color: {TEXT_PRIMARY} !important;
 }}
 
 input, textarea, .stNumberInput input {{
@@ -75,23 +76,45 @@ input, textarea, .stNumberInput input {{
     border-radius: 8px !important;
 }}
 
-/* Tombol sekunder (mis. Reset) — outline netral, teks gelap */
-button {{ border-radius: 8px !important; }}
-button p {{ font-size: 1rem !important; font-weight: 600 !important; }}
+/* SEMUA BUTTON */
+button {{ 
+    border-radius: 8px !important; 
+}}
+button p {{ 
+    font-size: 1rem !important; 
+    font-weight: 600 !important; 
+}}
 
-/* Tombol utama — dark navy solid, teks putih */
+/* BUTTON PRIMARY - DARK NAVY */
 button[kind="primary"] {{
-    background: {SIDEBAR_BG} !important;
-    border: 1px solid {SIDEBAR_BG} !important;
-}}
-button[kind="primary"] p, button[kind="primary"] span {{
+    background: #0f172a !important;
+    border: 1px solid #0f172a !important;
     color: #ffffff !important;
-    font-size: 1.05rem !important;
-    font-weight: 700 !important;
+}}
+button[kind="primary"] * {{
+    color: #ffffff !important;
+}}
+button[kind="primary"] p {{
+    color: #ffffff !important;
 }}
 
-/* Radio & text_area — dipaksa hitam (lapisan tambahan, jaga-jaga) */
-div[data-testid="stRadio"] *, div[data-testid="stTextArea"] * {{
+/* BUTTON SECONDARY - RESET */
+button:not([kind="primary"]) {{
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #0f172a !important;
+}}
+button:not([kind="primary"]) * {{
+    color: #0f172a !important;
+}}
+
+/* Radio & text_area */
+div[data-testid="stRadio"] *,
+div[data-testid="stTextArea"] * {{
+    color: {TEXT_PRIMARY} !important;
+}}
+div[data-testid="stRadio"] label,
+div[data-testid="stRadio"] span {{
     color: {TEXT_PRIMARY} !important;
 }}
 
@@ -99,6 +122,13 @@ div[data-testid="stRadio"] *, div[data-testid="stTextArea"] * {{
 
 div[data-testid="stAlert"] {{ border-radius: 10px !important; font-size: 1rem !important; }}
 
+/* HASIL ESTIMASI - PASTIKAN TEKS HITAM */
+.mini-metric {{
+    color: {TEXT_PRIMARY} !important;
+}}
+.mini-metric * {{
+    color: {TEXT_PRIMARY} !important;
+}}
 .mini-metric .val {{ 
     font-size: 2rem !important; 
     color: {ACCENT} !important; 
@@ -110,25 +140,29 @@ div[data-testid="stAlert"] {{ border-radius: 10px !important; font-size: 1rem !i
 }}
 
 .badge {{
-    font-size: 1.05rem !important; padding: 8px 14px !important; font-weight: 700 !important;
-    border-radius: 10px !important; display: inline-block !important; border: 1px solid transparent !important;
+    font-size: 1.05rem !important; 
+    padding: 8px 14px !important; 
+    font-weight: 700 !important;
+    border-radius: 10px !important; 
+    display: inline-block !important; 
+    border: 1px solid transparent !important;
 }}
 .badge-high {{ 
     color: {DANGER_TEXT} !important; 
     background: {DANGER_BG} !important; 
     border-color: {DANGER_BORDER} !important; 
 }}
-.badge-low  {{ 
+.badge-low {{ 
     color: {SUCCESS_TEXT} !important; 
     background: {SUCCESS_BG} !important; 
     border-color: {SUCCESS_BORDER} !important; 
 }}
+.badge-high *,
+.badge-low * {{
+    color: inherit !important;
+}}
 
-/* Perbaikan: pastikan teks di badge terbaca */
-.badge-high, .badge-high * {{ color: {DANGER_TEXT} !important; }}
-.badge-low, .badge-low * {{ color: {SUCCESS_TEXT} !important; }}
-
-/* Judul kartu ("A — ...", dst) dari section_label() di ui/theme.py — timpa ke hitam */
+/* Judul kartu */
 [style*="2dd4bf"], [style*="45,212,191"], [style*="14b8a6"], [style*="0d9488"] {{
     color: {TEXT_PRIMARY} !important;
 }}
@@ -137,23 +171,35 @@ div[data-testid="stAlert"] {{ border-radius: 10px !important; font-size: 1rem !i
     color: {TEXT_PRIMARY} !important;
 }}
 
-/* Label mini kustom (dipakai utk pertanyaan Card C) */
+/* Label mini */
 .field-label {{
-    font-weight: 700 !important; color: {TEXT_PRIMARY} !important;
-    font-size: 1rem !important; margin-bottom: 6px !important; display: block !important;
+    font-weight: 700 !important; 
+    color: {TEXT_PRIMARY} !important;
+    font-size: 1rem !important; 
+    margin-bottom: 6px !important; 
+    display: block !important;
 }}
 
-/* Perbaikan tambahan untuk hasil estimasi - pastikan semua teks hitam */
-[data-testid="stVerticalBlock"] .mini-metric *,
-[data-testid="stColumn"] .mini-metric *,
-.mini-metric,
-.mini-metric div,
-.mini-metric span {{
+/* STREAMILT SPECIFIC OVERRIDES */
+.stAlert {{
     color: {TEXT_PRIMARY} !important;
 }}
-/* Kecuali value yang tetap biru aksen */
-.mini-metric .val {{
-    color: {ACCENT} !important;
+.stAlert * {{
+    color: {TEXT_PRIMARY} !important;
+}}
+.stSuccess {{
+    color: {TEXT_PRIMARY} !important;
+}}
+.stWarning {{
+    color: {TEXT_PRIMARY} !important;
+}}
+
+/* Fix untuk radio button options */
+div[role="radiogroup"] label {{
+    color: {TEXT_PRIMARY} !important;
+}}
+div[role="radiogroup"] span {{
+    color: {TEXT_PRIMARY} !important;
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -312,7 +358,7 @@ with st.expander("📌 Panduan Pengisian", expanded=True):
     </div>
     """, unsafe_allow_html=True)
 
-card_close()  # tutup Card A
+card_close()
 
 # ── PROSES ESTIMASI ────────────────────────────────────────────────────
 if submitted:
@@ -387,15 +433,13 @@ else:
         with st.expander("Lihat detail tetangga terdekat", expanded=True):
             st.dataframe(preview, use_container_width=True, hide_index=True)
 
-    card_close()  # tutup Card B
+    card_close()
 
     # ── CARD C: VALIDASI KLINIS (REVISE) ───────────────────────────────
     section_label("C — Validasi Klinis (Revise)")
 
     rc1, rc2, rc3 = st.columns(3)
 
-    # Label pertanyaan dirender manual (hitam, dijamin) + widget dgn label bawaan disembunyikan,
-    # supaya warna teks pertanyaan tidak lagi bergantung pada override CSS terhadap widget internal.
     with rc1:
         st.markdown('<span class="field-label">Apakah hasil estimasi sesuai pertimbangan klinis?</span>', unsafe_allow_html=True)
         validated = st.radio(
@@ -426,7 +470,7 @@ else:
     else:
         st.warning("Outcome dikoreksi oleh tenaga kesehatan.")
 
-    card_close()  # tutup Card C
+    card_close()
 
     # ── CARD D: SIMPAN KE BASIS KASUS (RETAIN) ─────────────────────────
     section_label("D — Simpan ke Basis Kasus (Retain)")
@@ -449,7 +493,7 @@ else:
             st.session_state.pop("latest_pred", None)
             st.rerun()
 
-    card_close()  # tutup Card D
+    card_close()
 
 # ── CATATAN BAWAH HALAMAN ───────────────────────────────────────────────
 st.markdown(f"""
