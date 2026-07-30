@@ -113,6 +113,19 @@ div[data-testid="stAlert"] {{
 }}
 .badge-high {{ color: #b91c1c !important; background: rgba(185,28,28,.12) !important; }}
 .badge-low  {{ color: #047857 !important; background: rgba(4,120,87,.12) !important; }}
+
+/* Paksa judul kartu ("A — ...", "B — ...", dst) jadi hitam.
+   Judul ini dirender oleh section_label() di ui/theme.py yang memakai warna
+   teal (#2dd4bf) sebagai aksen — kita timpa lewat beberapa kemungkinan selector. */
+[style*="2dd4bf"], [style*="45,212,191"],
+[style*="14b8a6"], [style*="0d9488"] {{
+    color: {TEXT_PRIMARY} !important;
+}}
+.section-label, .section-label *,
+[class*="section-label"], [class*="section-title"], [class*="card-title"],
+[class*="section-label"] *, [class*="section-title"] *, [class*="card-title"] * {{
+    color: {TEXT_PRIMARY} !important;
+}}
 </style>
 """, unsafe_allow_html=True)
 
