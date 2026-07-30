@@ -16,134 +16,112 @@ from ui.theme import card_close, card_open, divider, inject_glass_theme, section
 st.set_page_config(page_title="Deteksi — DM Tipe 2", page_icon="🧪", layout="wide")
 inject_glass_theme()
 
-# ── PALET WARNA TUNGGAL — monokrom abu-abu (satu sumber kebenaran) ──────
-BG_PAGE = "#e5e7eb"        # abu muda — latar halaman
-BG_CARD = "rgba(255,255,255,.65)"   # abu sangat muda/putih transparan — kartu kaca
-BORDER_CARD = "rgba(17,24,39,.10)"  # garis tepi kartu, abu gelap tipis
-TEXT_PRIMARY = "#111827"   # hitam pekat — teks utama di atas kartu terang
-TEXT_MUTED = "#6b7280"     # abu sedang — teks sekunder/caption
-CHIP_BG = "#d1d5db"        # abu — latar chip label kecil
-SIDEBAR_BG = "#27272a"     # abu gelap — sidebar
-SIDEBAR_TEXT = "#f9fafb"   # putih — teks sidebar (kontras dgn latar gelap)
-BUTTON_NAVY = "#0f172a"    # dark navy — tombol "Proses Estimasi"
+# ── DESIGN TOKENS — satu sumber kebenaran untuk seluruh halaman ─────────
+BG_PAGE = "#f1f5f9"        # slate-100 — latar halaman, netral & lembut
+BG_CARD = "#ffffff"        # kartu solid putih (bukan glass) — lebih terbaca & standar
+BORDER_CARD = "#e2e8f0"    # slate-200 — garis tepi kartu
+TEXT_PRIMARY = "#0f172a"   # slate-900 — teks utama
+TEXT_MUTED = "#64748b"     # slate-500 — teks sekunder/caption
+ACCENT = "#2563eb"         # blue-600 — satu warna aksen: tombol utama, angka penting
+ACCENT_SOFT = "#dbeafe"    # blue-100 — latar chip/label kecil
+SIDEBAR_BG = "#0f172a"     # slate-900 — sidebar gelap, senada TEXT_PRIMARY
+SIDEBAR_TEXT = "#f1f5f9"   # teks sidebar terang, kontras dgn latar gelap
 
-# ── TEMA ABU-ABU KONSISTEN UNTUK SELURUH HALAMAN ─────────────────────────
+DANGER_TEXT, DANGER_BG, DANGER_BORDER = "#b91c1c", "#fef2f2", "#fecaca"   # merah — risiko
+SUCCESS_TEXT, SUCCESS_BG, SUCCESS_BORDER = "#15803d", "#f0fdf4", "#bbf7d0"  # hijau — aman
+
+# ── STYLE GLOBAL ──────────────────────────────────────────────────────────
 st.markdown(f"""
 <style>
-/* Latar belakang aplikasi: abu muda polos, satu tone */
-.stApp {{
-    background: {BG_PAGE} !important;
-}}
+:root {{ color-scheme: light; }}
 
-html, body, [class^="css"] {{ font-size: 17px !important; }}
+.stApp {{ background: {BG_PAGE} !important; }}
+html, body, [class^="css"] {{ font-size: 16px !important; }}
 
-/* Sidebar: abu gelap, teks putih agar kontras */
-section[data-testid="stSidebar"] {{
-    background: {SIDEBAR_BG} !important;
-}}
-section[data-testid="stSidebar"] * {{
-    color: {SIDEBAR_TEXT} !important;
-    font-size: 1rem !important;
-}}
+/* Sidebar */
+section[data-testid="stSidebar"] {{ background: {SIDEBAR_BG} !important; }}
+section[data-testid="stSidebar"] * {{ color: {SIDEBAR_TEXT} !important; font-size: 1rem !important; }}
 
-/* ── KARTU — satu gaya konsisten utk semua kontainer bertepi ────────── */
+/* Kartu — flat, solid, konsisten */
 div[data-testid="stForm"],
 div[data-testid="stExpander"],
 div[data-testid="stVerticalBlockBorderWrapper"] {{
     background: {BG_CARD} !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
     border: 1px solid {BORDER_CARD} !important;
-    border-radius: 18px !important;
-    box-shadow: 0 4px 18px rgba(17,24,39,.08) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04) !important;
 }}
-/* Semua teks di dalam kartu dipaksa satu warna hitam yang sama */
 div[data-testid="stForm"] *,
 div[data-testid="stExpander"] *,
 div[data-testid="stVerticalBlockBorderWrapper"] * {{
     color: {TEXT_PRIMARY} !important;
 }}
 
-/* Judul H1–H3 di luar kartu (langsung di atas latar abu muda) tetap hitam */
 h1, h2, h3 {{ color: {TEXT_PRIMARY} !important; }}
 
-/* CATCH-ALL: paksa SEMUA teks di area konten utama (di luar sidebar) jadi hitam,
-   supaya tidak ada lagi teks putih yang tersisa dari tema gelap bawaan */
-div.main *, [data-testid="stMain"] *, [data-testid="stAppViewContainer"] > div.main * {{
-    color: {TEXT_PRIMARY} !important;
-}}
+/* Catch-all: pastikan tidak ada teks putih tersisa di area konten utama */
+div.main *, [data-testid="stMain"] * {{ color: {TEXT_PRIMARY} !important; }}
 
-/* Label, teks body, caption — ukuran lebih besar & seragam */
 label, .stMarkdown p, .stMarkdown li, .stCaption, p, span {{
-    font-size: 1.05rem !important;
+    font-size: 1rem !important;
     line-height: 1.6 !important;
 }}
 
-/* Input & textarea */
 input, textarea, .stNumberInput input {{
-    font-size: 1.1rem !important;
+    font-size: 1.05rem !important;
     color: {TEXT_PRIMARY} !important;
     background: #ffffff !important;
     border: 1px solid {BORDER_CARD} !important;
+    border-radius: 8px !important;
 }}
 
-/* Tombol utama: dark navy solid, teks putih tebal (kontras jelas) — lebih spesifik
-   daripada aturan catch-all di atas, jadi tetap putih meski aturan catch-all hitam */
-button[kind="primary"], button[kind="formSubmit"] {{
-    background: {BUTTON_NAVY} !important;
-    border: none !important;
+/* Tombol sekunder (mis. Reset) — outline netral, teks gelap */
+button {{ border-radius: 8px !important; }}
+button p {{ font-size: 1rem !important; font-weight: 600 !important; }}
+
+/* Tombol utama — aksen biru solid, teks putih (lebih spesifik dari catch-all) */
+button[kind="primary"] {{
+    background: {ACCENT} !important;
+    border: 1px solid {ACCENT} !important;
 }}
-button[kind="primary"] p, button[kind="formSubmit"] p,
-button[kind="primary"] span, button[kind="formSubmit"] span {{
+button[kind="primary"] p, button[kind="primary"] span {{
     color: #ffffff !important;
-    font-size: 1.1rem !important;
+    font-size: 1.05rem !important;
     font-weight: 700 !important;
 }}
-button p {{ font-size: 1.05rem !important; font-weight: 600 !important; }}
 
-/* Label pertanyaan & opsi pada radio, serta label text_area — dipaksa hitam */
-div[data-testid="stRadio"] label,
-div[data-testid="stRadio"] p,
-div[data-testid="stRadio"] span,
-div[data-testid="stRadio"] * ,
-div[data-testid="stTextArea"] label,
-div[data-testid="stTextArea"] * {{
+/* Radio & text_area — dipaksa hitam (lapisan tambahan, jaga-jaga) */
+div[data-testid="stRadio"] *, div[data-testid="stTextArea"] * {{
     color: {TEXT_PRIMARY} !important;
 }}
 
-/* Tabel */
-[data-testid="stDataFrame"] * {{ font-size: 1rem !important; color: {TEXT_PRIMARY} !important; }}
+[data-testid="stDataFrame"] * {{ font-size: .95rem !important; color: {TEXT_PRIMARY} !important; }}
 
-/* Kotak notifikasi bawaan Streamlit (success/warning/error) */
-div[data-testid="stAlert"] {{
-    border-radius: 14px !important;
-    font-size: 1.02rem !important;
-}}
+div[data-testid="stAlert"] {{ border-radius: 10px !important; font-size: 1rem !important; }}
 
-/* Kelas kustom kartu metrik/badge (didefinisikan di ui/theme.py) */
-.mini-metric .val {{ font-size: 2.1rem !important; color: {TEXT_PRIMARY} !important; font-weight: 800 !important; }}
-.mini-metric .lbl {{ font-size: 1rem !important; color: {TEXT_MUTED} !important; }}
+.mini-metric .val {{ font-size: 2rem !important; color: {ACCENT} !important; font-weight: 800 !important; }}
+.mini-metric .lbl {{ font-size: .95rem !important; color: {TEXT_MUTED} !important; }}
+
 .badge {{
-    font-size: 1.1rem !important;
-    padding: 10px 16px !important;
-    font-weight: 700 !important;
-    border-radius: 12px !important;
-    display: inline-block !important;
+    font-size: 1.05rem !important; padding: 8px 14px !important; font-weight: 700 !important;
+    border-radius: 10px !important; display: inline-block !important; border: 1px solid transparent !important;
 }}
-.badge-high {{ color: #b91c1c !important; background: rgba(185,28,28,.12) !important; }}
-.badge-low  {{ color: #047857 !important; background: rgba(4,120,87,.12) !important; }}
+.badge-high {{ color: {DANGER_TEXT} !important; background: {DANGER_BG} !important; border-color: {DANGER_BORDER} !important; }}
+.badge-low  {{ color: {SUCCESS_TEXT} !important; background: {SUCCESS_BG} !important; border-color: {SUCCESS_BORDER} !important; }}
 
-/* Paksa judul kartu ("A — ...", "B — ...", dst) jadi hitam.
-   Judul ini dirender oleh section_label() di ui/theme.py yang memakai warna
-   teal (#2dd4bf) sebagai aksen — kita timpa lewat beberapa kemungkinan selector. */
-[style*="2dd4bf"], [style*="45,212,191"],
-[style*="14b8a6"], [style*="0d9488"] {{
+/* Judul kartu ("A — ...", dst) dari section_label() di ui/theme.py — timpa ke hitam */
+[style*="2dd4bf"], [style*="45,212,191"], [style*="14b8a6"], [style*="0d9488"] {{
     color: {TEXT_PRIMARY} !important;
 }}
-.section-label, .section-label *,
 [class*="section-label"], [class*="section-title"], [class*="card-title"],
 [class*="section-label"] *, [class*="section-title"] *, [class*="card-title"] * {{
     color: {TEXT_PRIMARY} !important;
+}}
+
+/* Label mini kustom (dipakai utk pertanyaan Card C) */
+.field-label {{
+    font-weight: 700 !important; color: {TEXT_PRIMARY} !important;
+    font-size: 1rem !important; margin-bottom: 6px !important; display: block !important;
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -216,8 +194,8 @@ def run_predict(pi: PatientInput) -> dict[str, Any]:
 with st.sidebar:
     st.markdown("### ⚙️ Konfigurasi CBR")
     st.markdown(f"""
-    <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
-         border-radius:12px;padding:14px 16px;font-size:1.05rem;line-height:1.8;color:{SIDEBAR_TEXT} !important">
+    <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+         border-radius:10px;padding:14px 16px;font-size:1rem;line-height:1.8;color:{SIDEBAR_TEXT} !important">
       <b>Metode:</b> CBR + MultiSURF<br>
       <b>K Optimal:</b> {OPTIMAL_K} tetangga<br>
       <b>Akurasi:</b> 76,03%
@@ -226,23 +204,23 @@ with st.sidebar:
     st.markdown("<div style='height:.5rem'></div>", unsafe_allow_html=True)
     st.caption("Konfigurasi K=9 adalah hasil terbaik dari pengujian 10-Fold Stratified Cross Validation.")
 
-# ── PAGE HEADER (di atas latar abu muda, di luar kartu) ───────────────────
+# ── PAGE HEADER ────────────────────────────────────────────────────────────
 st.markdown(f"""
 <div style="margin-bottom:1.2rem">
-  <div style="font-size:.9rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-       color:{TEXT_PRIMARY};background:{CHIP_BG};display:inline-block;padding:4px 12px;border-radius:8px">
+  <div style="font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+       color:{ACCENT};background:{ACCENT_SOFT};display:inline-block;padding:4px 12px;border-radius:8px">
     Halaman Deteksi
   </div>
-  <div style="font-size:2.1rem;font-weight:800;color:{TEXT_PRIMARY};letter-spacing:-.02em;margin-top:.35rem">
+  <div style="font-size:2rem;font-weight:800;color:{TEXT_PRIMARY};letter-spacing:-.02em;margin-top:.4rem">
     Estimasi Risiko Diabetes Melitus Tipe 2
   </div>
-  <div style="color:{TEXT_MUTED};font-size:1.1rem;margin-top:.2rem">
+  <div style="color:{TEXT_MUTED};font-size:1.05rem;margin-top:.2rem">
     Isi data pemeriksaan pasien di bawah, lalu klik <b>Proses Estimasi</b>.
   </div>
 </div>
 """, unsafe_allow_html=True)
 
-# ── CARD A: INPUT DATA PEMERIKSAAN PASIEN (+ Panduan di dalam kartu yang sama) ──
+# ── CARD A: INPUT DATA PEMERIKSAAN PASIEN ─────────────────────────────────
 section_label("A — Input Data Pemeriksaan Pasien")
 st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
 
@@ -292,10 +270,9 @@ with st.form("patient_form", clear_on_submit=False):
         "🔍 Proses Estimasi", type="primary", use_container_width=True
     )
 
-# GUIDE — nested di dalam Card A yang sama (bukan kartu terpisah)
 with st.expander("📌 Panduan Pengisian", expanded=True):
     st.markdown(f"""
-    <div style="color:{TEXT_PRIMARY};font-size:1.05rem;line-height:1.85">
+    <div style="color:{TEXT_PRIMARY};font-size:1rem;line-height:1.85">
       • <b>Glucose, BloodPressure, SkinThickness, Insulin, BMI</b> tidak boleh diisi 0 —
         nilai 0 dianggap data tidak tersedia.<br>
       • Semua nilai harus sesuai hasil pemeriksaan aktual pasien.<br>
@@ -336,7 +313,7 @@ if not latest_input or not latest_pred:
     st.markdown(f"""
     <div style="text-align:center;padding:32px 0;color:{TEXT_MUTED}">
       <div style="font-size:3rem;margin-bottom:10px">🩺</div>
-      <div style="font-size:1.1rem">Belum ada hasil.<br>Isi form di atas lalu klik <b>Proses Estimasi</b>.</div>
+      <div style="font-size:1.05rem">Belum ada hasil.<br>Isi form di atas lalu klik <b>Proses Estimasi</b>.</div>
     </div>
     """, unsafe_allow_html=True)
     card_close()
@@ -352,14 +329,14 @@ else:
             st.markdown(f"""
             <div class="mini-metric" style="text-align:left">
               <div class="badge badge-high" style="margin-bottom:4px">⚠️ Beresiko Diabetes</div>
-              <div style="font-size:.9rem;color:{TEXT_MUTED};font-weight:600">(PREDIKSI)</div>
+              <div style="font-size:.85rem;color:{TEXT_MUTED};font-weight:600">(PREDIKSI)</div>
             </div>
             """, unsafe_allow_html=True)
         else:
             st.markdown(f"""
             <div class="mini-metric" style="text-align:left">
               <div class="badge badge-low" style="margin-bottom:4px">✅ Tidak Beresiko Diabetes</div>
-              <div style="font-size:.9rem;color:{TEXT_MUTED};font-weight:600">(PREDIKSI)</div>
+              <div style="font-size:.85rem;color:{TEXT_MUTED};font-weight:600">(PREDIKSI)</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -373,7 +350,6 @@ else:
 
     st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
-    # Tabel tetangga terdekat — tampil langsung terbuka
     preview = latest_pred.get("nearest_cases_preview")
     if isinstance(preview, pd.DataFrame) and not preview.empty:
         with st.expander("Lihat detail tetangga terdekat", expanded=True):
@@ -386,20 +362,24 @@ else:
 
     rc1, rc2, rc3 = st.columns(3)
 
+    # Label pertanyaan dirender manual (hitam, dijamin) + widget dgn label bawaan disembunyikan,
+    # supaya warna teks pertanyaan tidak lagi bergantung pada override CSS terhadap widget internal.
     with rc1:
+        st.markdown('<span class="field-label">Apakah hasil estimasi sesuai pertimbangan klinis?</span>', unsafe_allow_html=True)
         validated = st.radio(
             "Apakah hasil estimasi sesuai pertimbangan klinis?",
             options=["Sesuai", "Tidak sesuai"], horizontal=True,
-            key="validated_radio"
+            key="validated_radio", label_visibility="collapsed",
         )
 
     with rc2:
+        st.markdown('<span class="field-label">Tentukan outcome akhir:</span>', unsafe_allow_html=True)
         validated_outcome = st.radio(
             "Tentukan outcome akhir:",
             options=[0, 1],
             index=predicted,
             format_func=lambda v: "0 — Tidak Diabetes" if v == 0 else "1 — Diabetes",
-            horizontal=True, key="override_outcome"
+            horizontal=True, key="override_outcome", label_visibility="collapsed",
         )
 
     with rc3:
@@ -439,14 +419,12 @@ else:
 
     card_close()  # tutup Card D
 
-# ── CATATAN BAWAH HALAMAN — abu-abu senada, warna konsisten ──────────────
+# ── CATATAN BAWAH HALAMAN ───────────────────────────────────────────────
 st.markdown(f"""
-<div style="background:{BG_CARD};backdrop-filter:blur(14px);
-     border:1px solid {BORDER_CARD};border-radius:14px;padding:14px 18px;
+<div style="background:{ACCENT_SOFT};border:1px solid #bfdbfe;border-radius:12px;padding:14px 18px;
      font-size:1rem;color:{TEXT_PRIMARY};font-weight:500;
-     display:flex;align-items:center;gap:10px;margin-top:.7rem;
-     box-shadow:0 4px 18px rgba(17,24,39,.08)">
-  <span style="font-size:1.3rem">ℹ️</span>
+     display:flex;align-items:center;gap:10px;margin-top:.7rem">
+  <span style="font-size:1.2rem">ℹ️</span>
   <span>Catatan: Normalisasi MinMax dan pembobotan menggunakan bobot MultiSURF. Hasil estimasi bersifat pendukung klinis.</span>
 </div>
 """, unsafe_allow_html=True)
