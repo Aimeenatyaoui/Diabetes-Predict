@@ -79,10 +79,10 @@ input, textarea, .stNumberInput input {{
 button {{ border-radius: 8px !important; }}
 button p {{ font-size: 1rem !important; font-weight: 600 !important; }}
 
-/* Tombol utama — aksen biru solid, teks putih (lebih spesifik dari catch-all) */
+/* Tombol utama — dark navy solid, teks putih */
 button[kind="primary"] {{
-    background: {ACCENT} !important;
-    border: 1px solid {ACCENT} !important;
+    background: {SIDEBAR_BG} !important;
+    border: 1px solid {SIDEBAR_BG} !important;
 }}
 button[kind="primary"] p, button[kind="primary"] span {{
     color: #ffffff !important;
@@ -99,15 +99,34 @@ div[data-testid="stRadio"] *, div[data-testid="stTextArea"] * {{
 
 div[data-testid="stAlert"] {{ border-radius: 10px !important; font-size: 1rem !important; }}
 
-.mini-metric .val {{ font-size: 2rem !important; color: {ACCENT} !important; font-weight: 800 !important; }}
-.mini-metric .lbl {{ font-size: .95rem !important; color: {TEXT_MUTED} !important; }}
+.mini-metric .val {{ 
+    font-size: 2rem !important; 
+    color: {ACCENT} !important; 
+    font-weight: 800 !important; 
+}}
+.mini-metric .lbl {{ 
+    font-size: .95rem !important; 
+    color: {TEXT_MUTED} !important; 
+}}
 
 .badge {{
     font-size: 1.05rem !important; padding: 8px 14px !important; font-weight: 700 !important;
     border-radius: 10px !important; display: inline-block !important; border: 1px solid transparent !important;
 }}
-.badge-high {{ color: {DANGER_TEXT} !important; background: {DANGER_BG} !important; border-color: {DANGER_BORDER} !important; }}
-.badge-low  {{ color: {SUCCESS_TEXT} !important; background: {SUCCESS_BG} !important; border-color: {SUCCESS_BORDER} !important; }}
+.badge-high {{ 
+    color: {DANGER_TEXT} !important; 
+    background: {DANGER_BG} !important; 
+    border-color: {DANGER_BORDER} !important; 
+}}
+.badge-low  {{ 
+    color: {SUCCESS_TEXT} !important; 
+    background: {SUCCESS_BG} !important; 
+    border-color: {SUCCESS_BORDER} !important; 
+}}
+
+/* Perbaikan: pastikan teks di badge terbaca */
+.badge-high, .badge-high * {{ color: {DANGER_TEXT} !important; }}
+.badge-low, .badge-low * {{ color: {SUCCESS_TEXT} !important; }}
 
 /* Judul kartu ("A — ...", dst) dari section_label() di ui/theme.py — timpa ke hitam */
 [style*="2dd4bf"], [style*="45,212,191"], [style*="14b8a6"], [style*="0d9488"] {{
@@ -122,6 +141,19 @@ div[data-testid="stAlert"] {{ border-radius: 10px !important; font-size: 1rem !i
 .field-label {{
     font-weight: 700 !important; color: {TEXT_PRIMARY} !important;
     font-size: 1rem !important; margin-bottom: 6px !important; display: block !important;
+}}
+
+/* Perbaikan tambahan untuk hasil estimasi - pastikan semua teks hitam */
+[data-testid="stVerticalBlock"] .mini-metric *,
+[data-testid="stColumn"] .mini-metric *,
+.mini-metric,
+.mini-metric div,
+.mini-metric span {{
+    color: {TEXT_PRIMARY} !important;
+}}
+/* Kecuali value yang tetap biru aksen */
+.mini-metric .val {{
+    color: {ACCENT} !important;
 }}
 </style>
 """, unsafe_allow_html=True)
