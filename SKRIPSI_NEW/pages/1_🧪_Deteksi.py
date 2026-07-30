@@ -25,6 +25,7 @@ TEXT_MUTED = "#6b7280"     # abu sedang — teks sekunder/caption
 CHIP_BG = "#d1d5db"        # abu — latar chip label kecil
 SIDEBAR_BG = "#27272a"     # abu gelap — sidebar
 SIDEBAR_TEXT = "#f9fafb"   # putih — teks sidebar (kontras dgn latar gelap)
+BUTTON_NAVY = "#0f172a"    # dark navy — tombol "Proses Estimasi"
 
 # ── TEMA ABU-ABU KONSISTEN UNTUK SELURUH HALAMAN ─────────────────────────
 st.markdown(f"""
@@ -80,9 +81,9 @@ input, textarea, .stNumberInput input {{
     border: 1px solid {BORDER_CARD} !important;
 }}
 
-/* Tombol utama: abu gelap solid, teks putih tebal (kontras jelas) */
+/* Tombol utama: dark navy solid, teks putih tebal (kontras jelas) */
 button[kind="primary"], button[kind="formSubmit"] {{
-    background: {SIDEBAR_BG} !important;
+    background: {BUTTON_NAVY} !important;
     border: none !important;
 }}
 button[kind="primary"] p, button[kind="formSubmit"] p {{
@@ -91,6 +92,16 @@ button[kind="primary"] p, button[kind="formSubmit"] p {{
     font-weight: 700 !important;
 }}
 button p {{ font-size: 1.05rem !important; font-weight: 600 !important; }}
+
+/* Label pertanyaan & opsi pada radio, serta label text_area — dipaksa hitam */
+div[data-testid="stRadio"] label,
+div[data-testid="stRadio"] p,
+div[data-testid="stRadio"] span,
+div[data-testid="stRadio"] * ,
+div[data-testid="stTextArea"] label,
+div[data-testid="stTextArea"] * {{
+    color: {TEXT_PRIMARY} !important;
+}}
 
 /* Tabel */
 [data-testid="stDataFrame"] * {{ font-size: 1rem !important; color: {TEXT_PRIMARY} !important; }}
