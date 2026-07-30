@@ -67,6 +67,12 @@ div[data-testid="stVerticalBlockBorderWrapper"] * {{
 /* Judul H1–H3 di luar kartu (langsung di atas latar abu muda) tetap hitam */
 h1, h2, h3 {{ color: {TEXT_PRIMARY} !important; }}
 
+/* CATCH-ALL: paksa SEMUA teks di area konten utama (di luar sidebar) jadi hitam,
+   supaya tidak ada lagi teks putih yang tersisa dari tema gelap bawaan */
+div.main *, [data-testid="stMain"] *, [data-testid="stAppViewContainer"] > div.main * {{
+    color: {TEXT_PRIMARY} !important;
+}}
+
 /* Label, teks body, caption — ukuran lebih besar & seragam */
 label, .stMarkdown p, .stMarkdown li, .stCaption, p, span {{
     font-size: 1.05rem !important;
@@ -81,12 +87,14 @@ input, textarea, .stNumberInput input {{
     border: 1px solid {BORDER_CARD} !important;
 }}
 
-/* Tombol utama: dark navy solid, teks putih tebal (kontras jelas) */
+/* Tombol utama: dark navy solid, teks putih tebal (kontras jelas) — lebih spesifik
+   daripada aturan catch-all di atas, jadi tetap putih meski aturan catch-all hitam */
 button[kind="primary"], button[kind="formSubmit"] {{
     background: {BUTTON_NAVY} !important;
     border: none !important;
 }}
-button[kind="primary"] p, button[kind="formSubmit"] p {{
+button[kind="primary"] p, button[kind="formSubmit"] p,
+button[kind="primary"] span, button[kind="formSubmit"] span {{
     color: #ffffff !important;
     font-size: 1.1rem !important;
     font-weight: 700 !important;
