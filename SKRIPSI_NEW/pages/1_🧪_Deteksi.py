@@ -16,69 +16,102 @@ from ui.theme import card_close, card_open, divider, inject_glass_theme, section
 st.set_page_config(page_title="Deteksi — DM Tipe 2", page_icon="🧪", layout="wide")
 inject_glass_theme()
 
-# ── TEMA CERAH: BIRU LAUT + TEKS BESAR & KONTRAS ───────────────────────
-st.markdown("""
+# ── PALET WARNA TUNGGAL (dipakai konsisten di semua elemen di bawah) ────
+TEXT_PRIMARY = "#1e1b3a"   # teks utama di atas kartu kaca — hampir hitam, nuansa ungu gelap
+TEXT_MUTED = "#5b5470"     # teks sekunder/caption di atas kartu kaca
+ACCENT = "#7c3aed"         # ungu — dipakai utk aksen, angka metrik, ikon
+ACCENT_DARK = "#4c1d95"    # ungu tua — teks di atas chip terang
+CHIP_BG = "#ede9fe"        # latar chip label kecil ("Halaman Deteksi")
+
+# ── TEMA CERAH GLASSMORPHISM (satu sumber kebenaran utk seluruh halaman) ─
+st.markdown(f"""
 <style>
-/* Latar belakang aplikasi: biru laut cerah */
-.stApp {
-    background: linear-gradient(160deg, #38bdf8 0%, #0ea5e9 45%, #0369a1 100%) !important;
-}
+/* Latar belakang aplikasi: gradien cerah ungu → fuchsia → rose */
+.stApp {{
+    background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 50%, #fb7185 100%) !important;
+    background-attachment: fixed !important;
+}}
 
-/* Ukuran font dasar lebih besar di seluruh halaman */
-html, body, [class^="css"] {
-    font-size: 17px !important;
-}
+html, body, [class^="css"] {{ font-size: 17px !important; }}
 
-/* Sidebar: biru laut lebih gelap, teks putih agar kontras */
-section[data-testid="stSidebar"] {
-    background: #0c4a6e !important;
-}
-section[data-testid="stSidebar"] * {
-    color: #f0f9ff !important;
+/* Sidebar: kaca gelap senada tema, teks terang */
+section[data-testid="stSidebar"] {{
+    background: rgba(30, 15, 60, .55) !important;
+    backdrop-filter: blur(18px) !important;
+}}
+section[data-testid="stSidebar"] * {{
+    color: #f5f3ff !important;
     font-size: 1rem !important;
-}
+}}
 
-/* Kartu (form, expander, container berbingkai) jadi putih agar teks gelap kontras */
+/* ── KARTU KACA — satu gaya utk semua kontainer bertepi ────────────── */
 div[data-testid="stForm"],
 div[data-testid="stExpander"],
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    background: #ffffff !important;
-    border-radius: 16px !important;
-    color: #0f172a !important;
-}
+div[data-testid="stVerticalBlockBorderWrapper"] {{
+    background: rgba(255, 255, 255, .55) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, .6) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(76, 29, 149, .18) !important;
+}}
+/* Semua teks di dalam kartu kaca dipaksa satu warna gelap yang sama */
 div[data-testid="stForm"] *,
 div[data-testid="stExpander"] *,
-div[data-testid="stVerticalBlockBorderWrapper"] * {
-    color: #0f172a !important;
-}
+div[data-testid="stVerticalBlockBorderWrapper"] * {{
+    color: {TEXT_PRIMARY} !important;
+}}
 
-/* Judul */
-h1, h2, h3 { color: #ffffff !important; }
+/* Judul H1–H3 di luar kartu (di atas gradien) tetap putih */
+h1, h2, h3 {{ color: #ffffff !important; }}
 
-/* Label, teks body, caption — lebih besar */
-label, .stMarkdown p, .stMarkdown li, .stCaption, p, span {
+/* Label, teks body, caption — ukuran lebih besar & seragam */
+label, .stMarkdown p, .stMarkdown li, .stCaption, p, span {{
     font-size: 1.05rem !important;
     line-height: 1.6 !important;
-}
+}}
 
 /* Input & textarea */
-input, textarea, .stNumberInput input {
+input, textarea, .stNumberInput input {{
     font-size: 1.1rem !important;
-    color: #0f172a !important;
-}
+    color: {TEXT_PRIMARY} !important;
+    background: rgba(255, 255, 255, .75) !important;
+}}
 
-/* Tombol */
-button p { font-size: 1.1rem !important; font-weight: 700 !important; }
+/* Tombol utama: gradien ungu-fuchsia, teks putih tebal */
+button[kind="primary"], button[kind="formSubmit"] {{
+    background: linear-gradient(135deg, #7c3aed, #d946ef) !important;
+    border: none !important;
+}}
+button[kind="primary"] p, button[kind="formSubmit"] p {{
+    color: #ffffff !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+}}
+button p {{ font-size: 1.05rem !important; font-weight: 600 !important; }}
 
 /* Tabel */
-[data-testid="stDataFrame"] * { font-size: 1rem !important; }
+[data-testid="stDataFrame"] * {{ font-size: 1rem !important; color: {TEXT_PRIMARY} !important; }}
 
-/* Kelas kustom dari kartu metrik/badge (dari ui/theme.py) */
-.mini-metric .val { font-size: 2.1rem !important; color: #0369a1 !important; font-weight: 800 !important; }
-.mini-metric .lbl { font-size: 1rem !important; color: #334155 !important; }
-.badge { font-size: 1.1rem !important; padding: 10px 16px !important; font-weight: 700 !important; }
-.badge-high { color: #b91c1c !important; }
-.badge-low { color: #047857 !important; }
+/* Kotak notifikasi bawaan Streamlit (success/warning/error) — gaya kaca senada */
+div[data-testid="stAlert"] {{
+    border-radius: 14px !important;
+    backdrop-filter: blur(12px) !important;
+    font-size: 1.02rem !important;
+}}
+
+/* Kelas kustom kartu metrik/badge (didefinisikan di ui/theme.py) */
+.mini-metric .val {{ font-size: 2.1rem !important; color: {ACCENT} !important; font-weight: 800 !important; }}
+.mini-metric .lbl {{ font-size: 1rem !important; color: {TEXT_MUTED} !important; }}
+.badge {{
+    font-size: 1.1rem !important;
+    padding: 10px 16px !important;
+    font-weight: 700 !important;
+    border-radius: 12px !important;
+    display: inline-block !important;
+}}
+.badge-high {{ color: #b91c1c !important; background: rgba(239,68,68,.15) !important; }}
+.badge-low  {{ color: #047857 !important; background: rgba(16,185,129,.15) !important; }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -150,8 +183,8 @@ def run_predict(pi: PatientInput) -> dict[str, Any]:
 with st.sidebar:
     st.markdown("### ⚙️ Konfigurasi CBR")
     st.markdown(f"""
-    <div style="background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.4);
-         border-radius:10px;padding:14px 16px;font-size:1.05rem;line-height:1.8;color:#f0f9ff">
+    <div style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+         border-radius:12px;padding:14px 16px;font-size:1.05rem;line-height:1.8;color:#f5f3ff !important">
       <b>Metode:</b> CBR + MultiSURF<br>
       <b>K Optimal:</b> {OPTIMAL_K} tetangga<br>
       <b>Akurasi:</b> 76,03%
@@ -160,16 +193,18 @@ with st.sidebar:
     st.markdown("<div style='height:.5rem'></div>", unsafe_allow_html=True)
     st.caption("Konfigurasi K=9 adalah hasil terbaik dari pengujian 10-Fold Stratified Cross Validation.")
 
-# ── PAGE HEADER ──────────────────────────────────────────────────────────
-st.markdown("""
+# ── PAGE HEADER (di atas gradien, di luar kartu kaca) ─────────────────────
+st.markdown(f"""
 <div style="margin-bottom:1.2rem">
-  <div style="font-size:.95rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#083344;background:#a5f3fc;display:inline-block;padding:3px 10px;border-radius:6px">
+  <div style="font-size:.9rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+       color:{ACCENT_DARK};background:{CHIP_BG};display:inline-block;padding:4px 12px;border-radius:8px">
     Halaman Deteksi
   </div>
-  <div style="font-size:2.1rem;font-weight:800;color:#ffffff;letter-spacing:-.02em;text-shadow:0 1px 3px rgba(0,0,0,.25);margin-top:.3rem">
+  <div style="font-size:2.1rem;font-weight:800;color:#ffffff;letter-spacing:-.02em;
+       text-shadow:0 2px 6px rgba(0,0,0,.25);margin-top:.35rem">
     Estimasi Risiko Diabetes Melitus Tipe 2
   </div>
-  <div style="color:#f0f9ff;font-size:1.1rem;margin-top:.2rem">
+  <div style="color:#ffffff;opacity:.9;font-size:1.1rem;margin-top:.2rem">
     Isi data pemeriksaan pasien di bawah, lalu klik <b>Proses Estimasi</b>.
   </div>
 </div>
@@ -227,8 +262,8 @@ with st.form("patient_form", clear_on_submit=False):
 
 # GUIDE — nested di dalam Card A yang sama (bukan kartu terpisah)
 with st.expander("📌 Panduan Pengisian", expanded=True):
-    st.markdown("""
-    <div style="color:#1e293b;font-size:1.05rem;line-height:1.85">
+    st.markdown(f"""
+    <div style="color:{TEXT_PRIMARY};font-size:1.05rem;line-height:1.85">
       • <b>Glucose, BloodPressure, SkinThickness, Insulin, BMI</b> tidak boleh diisi 0 —
         nilai 0 dianggap data tidak tersedia.<br>
       • Semua nilai harus sesuai hasil pemeriksaan aktual pasien.<br>
@@ -266,8 +301,8 @@ latest_pred = st.session_state.get("latest_pred")
 section_label("B — Hasil Estimasi")
 
 if not latest_input or not latest_pred:
-    st.markdown("""
-    <div style="text-align:center;padding:32px 0;color:#64748b">
+    st.markdown(f"""
+    <div style="text-align:center;padding:32px 0;color:{TEXT_MUTED}">
       <div style="font-size:3rem;margin-bottom:10px">🩺</div>
       <div style="font-size:1.1rem">Belum ada hasil.<br>Isi form di atas lalu klik <b>Proses Estimasi</b>.</div>
     </div>
@@ -282,17 +317,17 @@ else:
 
     with b1:
         if predicted == 1:
-            st.markdown("""
+            st.markdown(f"""
             <div class="mini-metric" style="text-align:left">
               <div class="badge badge-high" style="margin-bottom:4px">⚠️ Beresiko Diabetes</div>
-              <div style="font-size:.9rem;color:#64748b;font-weight:600">(PREDIKSI)</div>
+              <div style="font-size:.9rem;color:{TEXT_MUTED};font-weight:600">(PREDIKSI)</div>
             </div>
             """, unsafe_allow_html=True)
         else:
-            st.markdown("""
+            st.markdown(f"""
             <div class="mini-metric" style="text-align:left">
               <div class="badge badge-low" style="margin-bottom:4px">✅ Tidak Beresiko Diabetes</div>
-              <div style="font-size:.9rem;color:#64748b;font-weight:600">(PREDIKSI)</div>
+              <div style="font-size:.9rem;color:{TEXT_MUTED};font-weight:600">(PREDIKSI)</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -372,11 +407,13 @@ else:
 
     card_close()  # tutup Card D
 
-# ── CATATAN BAWAH HALAMAN ──────────────────────────────────────────────
-st.markdown("""
-<div style="background:#e0f2fe;border:1px solid #7dd3fc;
-     border-radius:10px;padding:14px 18px;font-size:1rem;color:#0c4a6e;font-weight:500;
-     display:flex;align-items:center;gap:10px;margin-top:.7rem">
+# ── CATATAN BAWAH HALAMAN — gaya kaca senada, warna konsisten ────────────
+st.markdown(f"""
+<div style="background:rgba(255,255,255,.55);backdrop-filter:blur(16px);
+     border:1px solid rgba(255,255,255,.6);border-radius:14px;padding:14px 18px;
+     font-size:1rem;color:{TEXT_PRIMARY};font-weight:500;
+     display:flex;align-items:center;gap:10px;margin-top:.7rem;
+     box-shadow:0 8px 32px rgba(76,29,149,.18)">
   <span style="font-size:1.3rem">ℹ️</span>
   <span>Catatan: Normalisasi MinMax dan pembobotan menggunakan bobot MultiSURF. Hasil estimasi bersifat pendukung klinis.</span>
 </div>
