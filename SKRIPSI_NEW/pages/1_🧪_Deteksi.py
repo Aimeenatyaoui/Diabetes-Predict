@@ -59,7 +59,7 @@ div[data-testid="stVerticalBlockBorderWrapper"] * {{
 
 h1, h2, h3 {{ color: {TEXT_PRIMARY} !important; }}
 
-/* Pastikan semua teks di main area hitam */
+/* Pastikan semua teks di main area hitam KECUALI yang spesifik */
 div.main *, [data-testid="stMain"] * {{ color: {TEXT_PRIMARY} !important; }}
 
 label, .stMarkdown p, .stMarkdown li, .stCaption, p, span {{
@@ -108,13 +108,52 @@ button:not([kind="primary"]) * {{
     color: #0f172a !important;
 }}
 
-/* Radio & text_area */
-div[data-testid="stRadio"] *,
-div[data-testid="stTextArea"] * {{
+/* RADIO BUTTON - PERBAIKAN KHUSUS */
+div[data-testid="stRadio"] {{
     color: {TEXT_PRIMARY} !important;
 }}
-div[data-testid="stRadio"] label,
+div[data-testid="stRadio"] * {{
+    color: {TEXT_PRIMARY} !important;
+}}
+div[data-testid="stRadio"] label {{
+    color: {TEXT_PRIMARY} !important;
+}}
 div[data-testid="stRadio"] span {{
+    color: {TEXT_PRIMARY} !important;
+}}
+div[data-testid="stRadio"] p {{
+    color: {TEXT_PRIMARY} !important;
+}}
+/* Radio button horizontal */
+div[role="radiogroup"] {{
+    color: {TEXT_PRIMARY} !important;
+}}
+div[role="radiogroup"] * {{
+    color: {TEXT_PRIMARY} !important;
+}}
+div[role="radiogroup"] label {{
+    color: {TEXT_PRIMARY} !important;
+}}
+div[role="radiogroup"] span {{
+    color: {TEXT_PRIMARY} !important;
+}}
+/* Styling untuk radio options yang dipilih */
+div[role="radiogroup"] div[data-testid="stMarkdownContainer"] {{
+    color: {TEXT_PRIMARY} !important;
+}}
+div[role="radiogroup"] div[data-testid="stMarkdownContainer"] * {{
+    color: {TEXT_PRIMARY} !important;
+}}
+/* Force all text inside radio to be black */
+.stRadio div[role="radiogroup"] label span {{
+    color: #0f172a !important;
+}}
+.stRadio label span:last-child {{
+    color: #0f172a !important;
+}}
+
+/* Text area */
+div[data-testid="stTextArea"] * {{
     color: {TEXT_PRIMARY} !important;
 }}
 
@@ -122,7 +161,7 @@ div[data-testid="stRadio"] span {{
 
 div[data-testid="stAlert"] {{ border-radius: 10px !important; font-size: 1rem !important; }}
 
-/* HASIL ESTIMASI - PASTIKAN TEKS HITAM */
+/* HASIL ESTIMASI */
 .mini-metric {{
     color: {TEXT_PRIMARY} !important;
 }}
@@ -180,7 +219,7 @@ div[data-testid="stAlert"] {{ border-radius: 10px !important; font-size: 1rem !i
     display: block !important;
 }}
 
-/* STREAMILT SPECIFIC OVERRIDES */
+/* Alert messages */
 .stAlert {{
     color: {TEXT_PRIMARY} !important;
 }}
@@ -194,11 +233,16 @@ div[data-testid="stAlert"] {{ border-radius: 10px !important; font-size: 1rem !i
     color: {TEXT_PRIMARY} !important;
 }}
 
-/* Fix untuk radio button options */
-div[role="radiogroup"] label {{
+/* EXPANDER */
+.streamlit-expanderHeader {{
     color: {TEXT_PRIMARY} !important;
 }}
-div[role="radiogroup"] span {{
+.streamlit-expanderHeader * {{
+    color: {TEXT_PRIMARY} !important;
+}}
+
+/* COLUMN */
+div[data-testid="column"] * {{
     color: {TEXT_PRIMARY} !important;
 }}
 </style>
@@ -444,8 +488,10 @@ else:
         st.markdown('<span class="field-label">Apakah hasil estimasi sesuai pertimbangan klinis?</span>', unsafe_allow_html=True)
         validated = st.radio(
             "Apakah hasil estimasi sesuai pertimbangan klinis?",
-            options=["Sesuai", "Tidak sesuai"], horizontal=True,
-            key="validated_radio", label_visibility="collapsed",
+            options=["Sesuai", "Tidak sesuai"], 
+            horizontal=True,
+            key="validated_radio", 
+            label_visibility="collapsed",
         )
 
     with rc2:
@@ -455,14 +501,18 @@ else:
             options=[0, 1],
             index=predicted,
             format_func=lambda v: "0 — Tidak Diabetes" if v == 0 else "1 — Diabetes",
-            horizontal=True, key="override_outcome", label_visibility="collapsed",
+            horizontal=True, 
+            key="override_outcome", 
+            label_visibility="collapsed",
         )
 
     with rc3:
         note = st.text_area(
             "Catatan klinis (opsional)",
             placeholder="Tulis catatan di sini…",
-            height=80, max_chars=200, key="note_area"
+            height=80, 
+            max_chars=200, 
+            key="note_area"
         )
 
     if validated == "Sesuai" and validated_outcome == predicted:
