@@ -109,63 +109,58 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-left, right = st.columns([1.1, 1], gap="large")
+# ── CARD A: INPUT DATA PEMERIKSAAN PASIEN (+ Panduan di dalam kartu yang sama) ──
+section_label("A — Input Data Pemeriksaan Pasien")
+st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
 
-# ── LEFT: INPUT FORM ──────────────────────────────────────────────────────
-with left:
-    section_label("A — Input Data Pemeriksaan Pasien")
-    st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+with st.form("patient_form", clear_on_submit=False):
+    c1, c2 = st.columns(2)
 
-    with st.form("patient_form", clear_on_submit=False):
-        c1, c2 = st.columns(2)
-
-        with c1:
-            st.markdown("**Obstetri & Metabolisme**")
-            pregnancies = st.number_input(
-                "Kehamilan (Pregnancies)", min_value=0, max_value=20, value=1, step=1,
-                help="Jumlah riwayat kehamilan"
-            )
-            glucose = st.number_input(
-                "Glukosa (Glucose) mg/dL", min_value=1, max_value=500, value=100, step=1,
-                help="Konsentrasi glukosa plasma 2 jam setelah tes toleransi glukosa oral"
-            )
-            blood_pressure = st.number_input(
-                "Tekanan Darah (BloodPressure) mmHg", min_value=1, max_value=300, value=72, step=1,
-                help="Tekanan darah diastolik"
-            )
-            skin_thickness = st.number_input(
-                "Ketebalan Kulit (SkinThickness) mm", min_value=1, max_value=200, value=20, step=1,
-                help="Ketebalan lipatan kulit trisep"
-            )
-
-        with c2:
-            st.markdown("**Hormon & Antropometri**")
-            insulin = st.number_input(
-                "Insulin (mu U/mL)", min_value=1, max_value=2000, value=79, step=1,
-                help="Kadar insulin serum 2 jam"
-            )
-            bmi = st.number_input(
-                "BMI (kg/m²)", min_value=0.1, max_value=80.0, value=25.0, step=0.1,
-                help="Indeks massa tubuh"
-            )
-            dpf = st.number_input(
-                "DiabetesPedigreeFunction", min_value=0.001, max_value=5.0, value=0.350, step=0.001,
-                help="Skor riwayat diabetes dalam keluarga"
-            )
-            age = st.number_input(
-                "Usia (Age) tahun", min_value=1, max_value=120, value=30, step=1,
-                help="Usia pasien"
-            )
-
-        st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
-        submitted = st.form_submit_button(
-            "🔍 Proses Estimasi", type="primary", use_container_width=True
+    with c1:
+        st.markdown("**Obstetri & Metabolisme**")
+        pregnancies = st.number_input(
+            "Kehamilan (Pregnancies)", min_value=0, max_value=20, value=1, step=1,
+            help="Jumlah riwayat kehamilan"
+        )
+        glucose = st.number_input(
+            "Glukosa (Glucose) mg/dL", min_value=1, max_value=500, value=100, step=1,
+            help="Konsentrasi glukosa plasma 2 jam setelah tes toleransi glukosa oral"
+        )
+        blood_pressure = st.number_input(
+            "Tekanan Darah (BloodPressure) mmHg", min_value=1, max_value=300, value=72, step=1,
+            help="Tekanan darah diastolik"
+        )
+        skin_thickness = st.number_input(
+            "Ketebalan Kulit (SkinThickness) mm", min_value=1, max_value=200, value=20, step=1,
+            help="Ketebalan lipatan kulit trisep"
         )
 
-    card_close()
+    with c2:
+        st.markdown("**Hormon & Antropometri**")
+        insulin = st.number_input(
+            "Insulin (mu U/mL)", min_value=1, max_value=2000, value=79, step=1,
+            help="Kadar insulin serum 2 jam"
+        )
+        bmi = st.number_input(
+            "BMI (kg/m²)", min_value=0.1, max_value=80.0, value=25.0, step=0.1,
+            help="Indeks massa tubuh"
+        )
+        dpf = st.number_input(
+            "DiabetesPedigreeFunction", min_value=0.001, max_value=5.0, value=0.350, step=0.001,
+            help="Skor riwayat diabetes dalam keluarga"
+        )
+        age = st.number_input(
+            "Usia (Age) tahun", min_value=1, max_value=120, value=30, step=1,
+            help="Usia pasien"
+        )
 
-    # GUIDE CARD
-    section_label("Panduan Pengisian")
+    st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+    submitted = st.form_submit_button(
+        "🔍 Proses Estimasi", type="primary", use_container_width=True
+    )
+
+# GUIDE — nested di dalam Card A yang sama (bukan kartu terpisah)
+with st.expander("📌 Panduan Pengisian", expanded=True):
     st.markdown("""
     <div style="color:rgba(255,255,255,.72);font-size:.82rem;line-height:1.75">
       • <b>Glucose, BloodPressure, SkinThickness, Insulin, BMI</b> tidak boleh diisi 0 —
@@ -174,27 +169,22 @@ with left:
       • Hasil estimasi bersifat <b>pendukung klinis</b>, bukan diagnosis final.
     </div>
     """, unsafe_allow_html=True)
-    card_close()
 
-# ── RIGHT: RESULT PANEL ────────────────────────────────────────────────────
-with right:
-    section_label("B — Hasil Estimasi")
+card_close()  # tutup Card A
 
-    if submitted:
-        pi = PatientInput(
-            Pregnancies=float(pregnancies), Glucose=float(glucose),
-            BloodPressure=float(blood_pressure), SkinThickness=float(skin_thickness),
-            Insulin=float(insulin), BMI=float(bmi),
-            DiabetesPedigreeFunction=float(dpf), Age=float(age),
-        )
-        errors = validate_input(pi)
-        if errors:
-            st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
-            for e in errors:
-                st.error(e)
-            card_close()
-            st.stop()
-
+# ── PROSES ESTIMASI ────────────────────────────────────────────────────
+if submitted:
+    pi = PatientInput(
+        Pregnancies=float(pregnancies), Glucose=float(glucose),
+        BloodPressure=float(blood_pressure), SkinThickness=float(skin_thickness),
+        Insulin=float(insulin), BMI=float(bmi),
+        DiabetesPedigreeFunction=float(dpf), Age=float(age),
+    )
+    errors = validate_input(pi)
+    if errors:
+        for e in errors:
+            st.error(e)
+    else:
         with st.spinner("Menghitung kemiripan kasus…"):
             try:
                 pred = run_predict(pi)
@@ -202,96 +192,126 @@ with right:
                 st.session_state["latest_pred"] = pred
             except Exception as e:
                 st.error(f"Gagal melakukan prediksi: {e}")
-                card_close()
-                st.stop()
 
-    latest_input = st.session_state.get("latest_input")
-    latest_pred = st.session_state.get("latest_pred")
+latest_input = st.session_state.get("latest_input")
+latest_pred = st.session_state.get("latest_pred")
 
-    if not latest_input or not latest_pred:
-        st.markdown("""
-        <div style="text-align:center;padding:32px 0;color:rgba(255,255,255,.4)">
-          <div style="font-size:2.5rem;margin-bottom:8px">🩺</div>
-          <div style="font-size:.88rem">Belum ada hasil.<br>Isi form di kiri lalu klik <b>Proses Estimasi</b>.</div>
-        </div>
-        """, unsafe_allow_html=True)
-        card_close()
-    else:
-        predicted = int(latest_pred["predicted_outcome"])
-        risk_score = float(latest_pred.get("risk_score", 0.0))
-        counts = latest_pred.get("neighbor_counts", {0: 0, 1: 0})
+# ── CARD B: HASIL ESTIMASI ─────────────────────────────────────────────
+section_label("B — Hasil Estimasi")
 
-        # Badge hasil
+if not latest_input or not latest_pred:
+    st.markdown("""
+    <div style="text-align:center;padding:32px 0;color:rgba(255,255,255,.4)">
+      <div style="font-size:2.5rem;margin-bottom:8px">🩺</div>
+      <div style="font-size:.88rem">Belum ada hasil.<br>Isi form di atas lalu klik <b>Proses Estimasi</b>.</div>
+    </div>
+    """, unsafe_allow_html=True)
+    card_close()
+else:
+    predicted = int(latest_pred["predicted_outcome"])
+    risk_score = float(latest_pred.get("risk_score", 0.0))
+    counts = latest_pred.get("neighbor_counts", {0: 0, 1: 0})
+
+    b1, b2, b3, b4 = st.columns(4)
+
+    with b1:
         if predicted == 1:
-            st.markdown('<div class="badge badge-high">⚠️ Beresiko Diabetes</div>', unsafe_allow_html=True)
-            st.markdown("<div style='color:rgba(255,255,255,.7);font-size:.88rem;margin-bottom:12px'>Sistem mengestimasi pasien <b>berisiko diabetes</b>. Diperlukan evaluasi klinis lebih lanjut.</div>", unsafe_allow_html=True)
+            st.markdown("""
+            <div class="mini-metric" style="text-align:left">
+              <div class="badge badge-high" style="margin-bottom:4px">⚠️ Beresiko Diabetes</div>
+              <div style="font-size:.72rem;color:rgba(255,255,255,.5)">(PREDIKSI)</div>
+            </div>
+            """, unsafe_allow_html=True)
         else:
-            st.markdown('<div class="badge badge-low">✅ Tidak Beresiko Diabetes</div>', unsafe_allow_html=True)
-            st.markdown("<div style='color:rgba(255,255,255,.7);font-size:.88rem;margin-bottom:12px'>Sistem mengestimasi pasien <b>tidak berisiko diabetes</b> saat ini.</div>", unsafe_allow_html=True)
+            st.markdown("""
+            <div class="mini-metric" style="text-align:left">
+              <div class="badge badge-low" style="margin-bottom:4px">✅ Tidak Beresiko Diabetes</div>
+              <div style="font-size:.72rem;color:rgba(255,255,255,.5)">(PREDIKSI)</div>
+            </div>
+            """, unsafe_allow_html=True)
 
-        # Metric row
-        mc1, mc2, mc3 = st.columns(3)
-        with mc1:
-            st.markdown(f"""<div class="mini-metric"><div class="val">{risk_score:.0%}</div><div class="lbl">Probabilitas Risiko</div></div>""", unsafe_allow_html=True)
-        with mc2:
-            st.markdown(f"""<div class="mini-metric"><div class="val">{counts.get(1,0)}/{OPTIMAL_K}</div><div class="lbl">Tetangga DM</div></div>""", unsafe_allow_html=True)
-        with mc3:
-            st.markdown(f"""<div class="mini-metric"><div class="val">{OPTIMAL_K}</div><div class="lbl">K Tetangga</div></div>""", unsafe_allow_html=True)
+    with b2:
+        st.markdown(f"""<div class="mini-metric"><div class="val">{risk_score:.0%}</div><div class="lbl">Probabilitas Risiko</div></div>""", unsafe_allow_html=True)
+    with b3:
+        outcome_label = "Tidak Diabetes" if predicted == 0 else "Diabetes"
+        st.markdown(f"""<div class="mini-metric"><div class="val">{predicted}</div><div class="lbl">Prediksi Outcome<br>({outcome_label})</div></div>""", unsafe_allow_html=True)
+    with b4:
+        st.markdown(f"""<div class="mini-metric"><div class="val">{counts.get(1,0)}/{OPTIMAL_K}</div><div class="lbl">K Tetangga: {OPTIMAL_K}</div></div>""", unsafe_allow_html=True)
 
-        # Neighbor preview
-        preview = latest_pred.get("nearest_cases_preview")
-        if isinstance(preview, pd.DataFrame) and not preview.empty:
-            with st.expander("Lihat detail tetangga terdekat"):
-                st.dataframe(preview, use_container_width=True, hide_index=True)
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
-        divider()
+    # Tabel tetangga terdekat — tampil langsung terbuka
+    preview = latest_pred.get("nearest_cases_preview")
+    if isinstance(preview, pd.DataFrame) and not preview.empty:
+        with st.expander("Lihat detail tetangga terdekat", expanded=True):
+            st.dataframe(preview, use_container_width=True, hide_index=True)
 
-        # ── REVISE ──
-        section_label("C — Validasi Klinis (Revise)")
+    card_close()  # tutup Card B
+
+    # ── CARD C: VALIDASI KLINIS (REVISE) ───────────────────────────────
+    section_label("C — Validasi Klinis (Revise)")
+
+    rc1, rc2, rc3 = st.columns(3)
+
+    with rc1:
         validated = st.radio(
             "Apakah hasil estimasi sesuai pertimbangan klinis?",
             options=["Sesuai", "Tidak sesuai"], horizontal=True,
             key="validated_radio"
         )
 
-        if validated == "Sesuai":
-            validated_outcome = predicted
-            st.success(f"Outcome dikonfirmasi: **{'Diabetes' if predicted == 1 else 'Tidak Diabetes'}**")
-        else:
-            validated_outcome = st.radio(
-                "Tentukan outcome akhir:",
-                options=[0, 1],
-                format_func=lambda v: "0 — Tidak Diabetes" if v == 0 else "1 — Diabetes",
-                horizontal=True, key="override_outcome"
-            )
-            st.warning("Outcome dikoreksi oleh tenaga kesehatan.")
-
-        note = st.text_area(
-            "Catatan klinis (opsional)",
-            placeholder="Contoh: hasil lab tambahan, pertimbangan rujukan, kondisi khusus pasien…",
-            height=80, key="note_area"
+    with rc2:
+        validated_outcome = st.radio(
+            "Tentukan outcome akhir:",
+            options=[0, 1],
+            index=predicted,
+            format_func=lambda v: "0 — Tidak Diabetes" if v == 0 else "1 — Diabetes",
+            horizontal=True, key="override_outcome"
         )
 
-        divider()
+    with rc3:
+        note = st.text_area(
+            "Catatan klinis (opsional)",
+            placeholder="Tulis catatan di sini…",
+            height=80, max_chars=200, key="note_area"
+        )
 
-        # ── RETAIN ──
-        section_label("D — Simpan ke Basis Kasus (Retain)")
-        sc1, sc2 = st.columns(2)
-        with sc1:
-            if st.button("💾 Simpan Kasus", type="primary", use_container_width=True):
-                row = {
-                    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
-                    **latest_input,
-                    "predicted_outcome": predicted,
-                    "validated_outcome": int(validated_outcome),
-                    "validation_note": note.strip(),
-                }
-                retain_case(row)
-                st.success("✅ Kasus berhasil disimpan ke basis kasus.")
-        with sc2:
-            if st.button("🔄 Reset", use_container_width=True):
-                st.session_state.pop("latest_input", None)
-                st.session_state.pop("latest_pred", None)
-                st.rerun()
+    if validated == "Sesuai" and validated_outcome == predicted:
+        st.success(f"Outcome dikonfirmasi: **{'Diabetes' if predicted == 1 else 'Tidak Diabetes'}**")
+    else:
+        st.warning("Outcome dikoreksi oleh tenaga kesehatan.")
 
-        card_close()
+    card_close()  # tutup Card C
+
+    # ── CARD D: SIMPAN KE BASIS KASUS (RETAIN) ─────────────────────────
+    section_label("D — Simpan ke Basis Kasus (Retain)")
+
+    sc1, sc2 = st.columns(2)
+    with sc1:
+        if st.button("💾 Simpan Kasus", type="primary", use_container_width=True):
+            row = {
+                "timestamp": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
+                **latest_input,
+                "predicted_outcome": predicted,
+                "validated_outcome": int(validated_outcome),
+                "validation_note": note.strip(),
+            }
+            retain_case(row)
+            st.success("✅ Kasus berhasil disimpan ke basis kasus.")
+    with sc2:
+        if st.button("🔄 Reset", use_container_width=True):
+            st.session_state.pop("latest_input", None)
+            st.session_state.pop("latest_pred", None)
+            st.rerun()
+
+    card_close()  # tutup Card D
+
+# ── CATATAN BAWAH HALAMAN ──────────────────────────────────────────────
+st.markdown("""
+<div style="background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.25);
+     border-radius:10px;padding:10px 14px;font-size:.8rem;color:rgba(255,255,255,.7);
+     display:flex;align-items:center;gap:8px;margin-top:.5rem">
+  <span>ℹ️</span>
+  <span>Catatan: Normalisasi MinMax dan pembobotan menggunakan bobot MultiSURF. Hasil estimasi bersifat pendukung klinis.</span>
+</div>
+""", unsafe_allow_html=True)
