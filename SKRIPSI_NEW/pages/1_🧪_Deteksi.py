@@ -429,7 +429,7 @@ latest_input = st.session_state.get("latest_input")
 latest_pred = st.session_state.get("latest_pred")
 
 # ── CARD B: HASIL ESTIMASI ─────────────────────────────────────────────
-section_label("B — Hasil Estimasi")
+section_label("B — Hasil Estimasi & Rekomendasi Klinis")
 
 if not latest_input or not latest_pred:
     st.markdown(f"""
@@ -470,7 +470,36 @@ else:
     with b4:
         st.markdown(f"""<div class="mini-metric"><div class="val">{counts.get(1,0)}/{OPTIMAL_K}</div><div class="lbl">K Tetangga: {OPTIMAL_K}</div></div>""", unsafe_allow_html=True)
 
-    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
+
+    # ── TAMPILAN REKOMENDASI KLINIS KHUSUS TENAGA KESEHATAN ────────────────
+    if predicted == 1:
+        st.markdown(f"""
+        <div style="background:{DANGER_BG}; border:1px solid {DANGER_BORDER}; border-radius:12px; padding:18px; margin-bottom:16px;">
+            <div style="color:{DANGER_TEXT} !important; font-size:1.1rem; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+                <span>📋 Rekomendasi Tindakan Selanjutnya (Pasien Beresiko Diabetes)</span>
+            </div>
+            <ul style="margin:0; padding-left:22px; color:{TEXT_PRIMARY} !important; line-height:1.7;">
+                <li><b>Konfirmasi Diagnostik Medis:</b> Sarankan pemeriksaan laboratorium konfirmasi, seperti <b>HbA1c (≥ 6.5%)</b>, <b>Glukosa Darah Puasa / GDP (≥ 126 mg/dL)</b>, atau <b>Tes Toleransi Glukosa Oral / TTGO 2 jam (≥ 200 mg/dL)</b>.</li>
+                <li><b>Edukasi & Modifikasi Gaya Hidup:</b> Berikan konseling pola makan seimbang (prinsip 3J: Jumlah, Jenis, Jadwal) dan anjuran aktivitas fisik aerobik sedang 150 menit/minggu.</li>
+                <li><b>Skrining Komplikasi & Komorbid:</b> Lakukan evaluasi tekanan darah, profil lipid, serta fungsi ginjal (Ureum/Kreatinin/UACR) dan pemeriksaan kesehatan kaki mandiri.</li>
+                <li><b>Tatalaksana Klinis & Rujukan:</b> Apabila hasil tes diagnostik positif, konsultasikan ke dokter DPJP / Dokter Spesialis Penyakit Dalam untuk pertimbangan inisiasi farmakoterapi (misal: Metformin) dan tatalaksana medis berkelanjutan.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown(f"""
+        <div style="background:{SUCCESS_BG}; border:1px solid {SUCCESS_BORDER}; border-radius:12px; padding:18px; margin-bottom:16px;">
+            <div style="color:{SUCCESS_TEXT} !important; font-size:1.1rem; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+                <span>📋 Rekomendasi Tindakan Selanjutnya (Pasien Tidak Beresiko Diabetes)</span>
+            </div>
+            <ul style="margin:0; padding-left:22px; color:{TEXT_PRIMARY} !important; line-height:1.7;">
+                <li><b>Edukasi Pencegahan Primer:</b> Dorong pasien untuk mempertahankan berat badan ideal (BMI normal), pola makan gizi seimbang, dan gaya hidup aktif secara rutin.</li>
+                <li><b>Monitoring & Skrining Berkala:</b> Agendakan penapisan/skrining ulang kadar gula darah secara berkala (minimal 1–3 tahun sekali), atau lebih awal jika muncul faktor risiko baru atau gejala klasik <i>3P</i> (Polidipsia, Polifagia, Poliuria).</li>
+                <li><b>Pengendalian Faktor Risiko Lain:</b> Pantau tekanan darah dan profil lipid secara berkala, terutama jika pasien memiliki riwayat hipertensi atau penyakit metabolik dalam keluarga.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
     preview = latest_pred.get("nearest_cases_preview")
     if isinstance(preview, pd.DataFrame) and not preview.empty:
