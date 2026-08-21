@@ -1,16 +1,16 @@
 import streamlit as st
 from ui.theme import card_close, card_open, divider, inject_glass_theme, section_label
 
-st.set_page_config(page_title="Tentang — DM Tipe 2", page_icon="ℹ️", layout="wide")
+st.set_page_config(page_title="About — Type 2 DM", page_icon=":material/info:", layout="wide")
 inject_glass_theme()
 
 st.markdown("""
 <div style="margin-bottom:1.5rem">
   <div style="font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#2dd4bf">
-    Informasi Sistem
+    System Information
   </div>
   <div style="font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-.02em">
-    Tentang Sistem
+    About the System
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -19,24 +19,25 @@ col1, col2 = st.columns([1.2, 1], gap="large")
 
 with col1:
     card_open()
-    section_label("Deskripsi Sistem")
+    section_label("System Description")
     st.markdown("""
     <div style="color:rgba(255,255,255,.8);font-size:.9rem;line-height:1.8">
-      Sistem ini merupakan aplikasi pendukung klinis untuk estimasi risiko
-      <b>Diabetes Melitus Tipe 2</b> yang dikembangkan menggunakan metode
-      <b>Case-Based Reasoning (CBR)</b> dengan pembobotan fitur <b>MultiSURF</b>.
+      This system is a clinical support application for estimating the risk of
+      <b>Type 2 Diabetes Mellitus</b>, developed using the
+      <b>Case-Based Reasoning (CBR)</b> method with
+      <b>MultiSURF</b> feature weighting.
       <br><br>
-      Sistem dirancang untuk digunakan oleh <b>tenaga kesehatan</b> di fasilitas
-      kesehatan tingkat 1 dalam membantu proses skrining awal pasien.
+      The system is designed for use by <b>healthcare professionals</b> in
+      primary healthcare facilities to support the initial screening process for patients.
     </div>
     """, unsafe_allow_html=True)
     divider()
-    section_label("Siklus CBR yang Diimplementasikan")
+    section_label("Implemented CBR Cycle")
     for step, desc in [
-        ("Retrieve", "Sistem mencari kasus-kasus historis yang paling mirip dengan data pasien menggunakan Weighted Euclidean Distance."),
-        ("Reuse", "Sistem mengadaptasi solusi dari kasus terpilih melalui voting mayoritas kelas dari K tetangga terdekat."),
-        ("Revise", "Tenaga kesehatan mengevaluasi hasil estimasi berdasarkan pertimbangan klinis dan dapat mengoreksi outcome."),
-        ("Retain", "Kasus yang telah divalidasi disimpan ke basis kasus untuk meningkatkan kinerja sistem di masa mendatang."),
+        ("Retrieve", "The system searches for historical cases that are most similar to the patient data using Weighted Euclidean Distance."),
+        ("Reuse", "The system adapts the solution from the selected cases through majority voting of the classes of the K nearest neighbors."),
+        ("Revise", "Healthcare professionals evaluate the estimation result based on clinical considerations and can correct the outcome."),
+        ("Retain", "Validated cases are stored in the case base to improve system performance in the future."),
     ]:
         st.markdown(f"""
         <div style="display:flex;gap:12px;margin-bottom:10px;align-items:flex-start">
@@ -50,7 +51,7 @@ with col1:
 
 with col2:
     card_open()
-    section_label("Performa Model (K=9)")
+    section_label("Model Performance (K=9)")
     for metric, val, color in [
         ("Accuracy", "76,03%", "#2dd4bf"),
         ("Precision", "65,87%", "#22c55e"),
@@ -66,20 +67,20 @@ with col2:
         """, unsafe_allow_html=True)
     st.markdown("""
     <div style="color:rgba(255,255,255,.45);font-size:.76rem;margin-top:10px">
-      Hasil pengujian Stratified 10-Fold Cross Validation.
+      Results from Stratified 10-Fold Cross Validation.
     </div>
     """, unsafe_allow_html=True)
     divider()
-    section_label("Fitur Input")
+    section_label("Input Features")
     feats = [
-        ("Pregnancies", "Jumlah riwayat kehamilan"),
-        ("Glucose", "Kadar glukosa plasma (mg/dL)"),
-        ("BloodPressure", "Tekanan darah diastolik (mmHg)"),
-        ("SkinThickness", "Ketebalan lipatan kulit trisep (mm)"),
-        ("Insulin", "Kadar insulin serum 2 jam (mu U/mL)"),
-        ("BMI", "Indeks massa tubuh (kg/m²)"),
-        ("DiabetesPedigreeFunction", "Skor riwayat diabetes keluarga"),
-        ("Age", "Usia pasien (tahun)"),
+        ("Pregnancies", "Number of pregnancies"),
+        ("Glucose", "Plasma glucose level (mg/dL)"),
+        ("BloodPressure", "Diastolic blood pressure (mmHg)"),
+        ("SkinThickness", "Triceps skin fold thickness (mm)"),
+        ("Insulin", "2-hour serum insulin level (mu U/mL)"),
+        ("BMI", "Body mass index (kg/m²)"),
+        ("DiabetesPedigreeFunction", "Family history of diabetes score"),
+        ("Age", "Patient age (years)"),
     ]
     for name, desc in feats:
         st.markdown(f"""
