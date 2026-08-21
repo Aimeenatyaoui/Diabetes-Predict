@@ -13,7 +13,7 @@ from cbr.engine import ZERO_AS_MISSING, build_artifacts_from_case_base, load_cas
 from cbr.weights_config import MULTISURF_WEIGHTS_ARRAY, OPTIMAL_K
 from ui.theme import card_close, card_open, divider, inject_glass_theme, section_label
 
-st.set_page_config(page_title="Deteksi — DM Tipe 2", page_icon="🧪", layout="wide")
+st.set_page_config(page_title="Deteksi — DM Tipe 2", page_icon=":material/medical_services:", layout="wide")
 inject_glass_theme()
 
 # ── DESIGN TOKENS ──────────────────────────────────────────────────────
@@ -314,7 +314,7 @@ def run_predict(pi: PatientInput) -> dict[str, Any]:
 
 # ── SIDEBAR ──────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### ⚙️ Konfigurasi CBR")
+    st.markdown("### :material/settings: Konfigurasi CBR")
     st.markdown(f"""
     <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
          border-radius:10px;padding:14px 16px;font-size:1rem;line-height:1.8;color:{SIDEBAR_TEXT} !important">
@@ -389,10 +389,10 @@ with st.form("patient_form", clear_on_submit=False):
 
     st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
     submitted = st.form_submit_button(
-        "🔍 Proses Estimasi", type="primary", use_container_width=True
+        ":material/search: Proses Estimasi", type="primary", use_container_width=True
     )
 
-with st.expander("📌 Panduan Pengisian", expanded=True):
+with st.expander(":material/push_pin: Panduan Pengisian", expanded=True):
     st.markdown(f"""
     <div style="color:{TEXT_PRIMARY};font-size:1rem;line-height:1.85">
       • <b>Glucose, BloodPressure, SkinThickness, Insulin, BMI</b> tidak boleh diisi 0 —
@@ -434,7 +434,9 @@ section_label("B — Hasil Estimasi & Rekomendasi Klinis")
 if not latest_input or not latest_pred:
     st.markdown(f"""
     <div style="text-align:center;padding:32px 0;color:{TEXT_MUTED}">
-      <div style="font-size:3rem;margin-bottom:10px">🩺</div>
+      <div style="font-size:3rem;margin-bottom:10px">
+          <span class="material-symbols-outlined">medical_services</span>
+      </div>
       <div style="font-size:1.05rem">Belum ada hasil.<br>Isi form di atas lalu klik <b>Proses Estimasi</b>.</div>
     </div>
     """, unsafe_allow_html=True)
@@ -477,7 +479,9 @@ else:
         st.markdown(f"""
         <div style="background:{DANGER_BG}; border:1px solid {DANGER_BORDER}; border-radius:12px; padding:18px; margin-bottom:16px;">
             <div style="color:{DANGER_TEXT} !important; font-size:1.1rem; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
-                <span>📋 Rekomendasi Tindakan Selanjutnya (Status Risiko: Beresiko)</span>
+                <span>
+                    :material/description: Rekomendasi Tindakan Selanjutnya(Status Risiko: Beresiko)
+                </span>
             </div>
             <ul style="margin:0; padding-left:22px; color:{TEXT_PRIMARY} !important; line-height:1.7;">
                 <li><b>Pemeriksaan Lanjutan:</b> Jadwalkan tes glukosa darah konfirmasi (seperti GDP, TTGO, atau HbA1c) sesuai prosedur operasional standar.</li>
@@ -490,7 +494,9 @@ else:
         st.markdown(f"""
         <div style="background:{SUCCESS_BG}; border:1px solid {SUCCESS_BORDER}; border-radius:12px; padding:18px; margin-bottom:16px;">
             <div style="color:{SUCCESS_TEXT} !important; font-size:1.1rem; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
-                <span>📋 Rekomendasi Tindakan Selanjutnya (Status Risiko: Tidak Beresiko)</span>
+                <span>
+                    :material/description: Rekomendasi Tindakan Selanjutnya(Status Risiko: Tidak Beresiko)
+                </span>
             </div>
             <ul style="margin:0; padding-left:22px; color:{TEXT_PRIMARY} !important; line-height:1.7;">
                 <li><b>Edukasi Pencegahan:</b> Anjurkan pasien untuk mempertahankan pola hidup sehat dan berat badan ideal.</li>
@@ -554,7 +560,11 @@ else:
 
     sc1, sc2 = st.columns(2)
     with sc1:
-        if st.button("💾 Simpan Kasus", type="primary", use_container_width=True):
+        if st.button(
+            ":material/save: Simpan Kasus",
+            type="primary",
+            use_container_width=True
+        ):
             row = {
                 "timestamp": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
                 **latest_input,
@@ -565,7 +575,10 @@ else:
             retain_case(row)
             st.success("✅ Kasus berhasil disimpan ke basis kasus.")
     with sc2:
-        if st.button("🔄 Reset", use_container_width=True):
+        if st.button(
+            ":material/refresh: Reset",
+            use_container_width=True
+        ):
             st.session_state.pop("latest_input", None)
             st.session_state.pop("latest_pred", None)
             st.rerun()
@@ -577,7 +590,10 @@ st.markdown(f"""
 <div style="background:{ACCENT_SOFT};border:1px solid #bfdbfe;border-radius:12px;padding:14px 18px;
      font-size:1rem;color:{TEXT_PRIMARY};font-weight:500;
      display:flex;align-items:center;gap:10px;margin-top:.7rem">
-  <span style="font-size:1.2rem">ℹ️</span>
+  <span class="material-symbols-outlined"
+        style="font-size:20px;">
+      info
+  </span>
   <span>Catatan: Normalisasi MinMax dan pembobotan menggunakan bobot MultiSURF. Hasil estimasi bersifat pendukung klinis.</span>
 </div>
 """, unsafe_allow_html=True)
